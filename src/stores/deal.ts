@@ -8,12 +8,21 @@ import {
 	getProductsExperience
 } from "@/services/DealService";
 
+/**
+ * Store de Pinia de la vista Deals: productos especiales, ofertas destacadas y
+ * productos de la sección "food experience".
+ */
 export const useDealStore = defineStore("deal", () => {
 	const specialProducts: Ref<ProductType[]> = ref<ProductType[]>([]);
 	const productsDeals: Ref<ProductType[]> = ref<ProductType[]>([]);
 	const productsExperience: Ref<ProductType[]> = ref<ProductType[]>([]);
 	const error: Ref<string> = ref<string>(null);
 
+	/**
+	 * Carga los productos especiales desde `DealService.getSpecialProducts`.
+	 * Si la respuesta indica fallo, deja `specialProducts` sin modificar y
+	 * guarda el mensaje en `error`.
+	 */
 	async function loadSpecialProducts() {
 		const response: ResponseType<ProductType[]> = await getSpecialProducts();
 
@@ -25,6 +34,11 @@ export const useDealStore = defineStore("deal", () => {
 		specialProducts.value = response.data;
 	}
 
+	/**
+	 * Carga las ofertas/deals desde `DealService.getProductsDeals`.
+	 * Si la respuesta indica fallo, deja `productsDeals` sin modificar y
+	 * guarda el mensaje en `error`.
+	 */
 	async function loadProductsDeals() {
 		const response: ResponseType<ProductType[]> = await getProductsDeals();
 
@@ -36,6 +50,11 @@ export const useDealStore = defineStore("deal", () => {
 		productsDeals.value = response.data;
 	}
 
+	/**
+	 * Carga los productos de "food experience" desde `DealService.getProductsExperience`.
+	 * Si la respuesta indica fallo, deja `productsExperience` sin modificar y
+	 * guarda el mensaje en `error`.
+	 */
 	async function loadProductsExperience() {
 		const response: ResponseType<ProductType[]> = await getProductsExperience();
 
@@ -51,6 +70,7 @@ export const useDealStore = defineStore("deal", () => {
 		specialProducts,
 		productsDeals,
 		productsExperience,
+		error,
 		loadSpecialProducts,
 		loadProductsDeals,
 		loadProductsExperience
