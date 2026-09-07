@@ -93,6 +93,16 @@ describe("useDealStore", () => {
 
 			expect(store.productsDeals).toEqual(products);
 		});
+
+		it("no modifica productsDeals y guarda el error cuando la respuesta falla", async () => {
+			vi.mocked(getProductsDeals).mockResolvedValueOnce({ success: false, message: "error" });
+
+			const store = useDealStore();
+			await store.loadProductsDeals();
+
+			expect(store.productsDeals).toEqual([]);
+			expect(store.error).toBe("error");
+		});
 	});
 
 	describe("loadProductsExperience", () => {
@@ -104,6 +114,16 @@ describe("useDealStore", () => {
 			await store.loadProductsExperience();
 
 			expect(store.productsExperience).toEqual(products);
+		});
+
+		it("no modifica productsExperience y guarda el error cuando la respuesta falla", async () => {
+			vi.mocked(getProductsExperience).mockResolvedValueOnce({ success: false, message: "error" });
+
+			const store = useDealStore();
+			await store.loadProductsExperience();
+
+			expect(store.productsExperience).toEqual([]);
+			expect(store.error).toBe("error");
 		});
 	});
 });

@@ -112,5 +112,15 @@ describe("useProductStore", () => {
 
 			expect(store.suggestedProducts).toEqual(products);
 		});
+
+		it("no modifica suggestedProducts y guarda el error cuando la respuesta falla", async () => {
+			vi.mocked(getSuggestedProducts).mockResolvedValueOnce({ success: false, message: "error" });
+
+			const store = useProductStore();
+			await store.loadSuggestedProducts();
+
+			expect(store.suggestedProducts).toEqual([]);
+			expect(store.error).toBe("error");
+		});
 	});
 });
